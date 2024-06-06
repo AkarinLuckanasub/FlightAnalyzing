@@ -1,0 +1,100 @@
+---
+title: "Data Analyzing"
+author: "Akarin Luckanasub"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### **Data Overview**
+##### First, let's take a look at the flights dataset:
+
+```{r}
+library(tidyverse)
+library(nycflights13)
+view(flights)
+data("flights")
+data("airlines")
+
+```
+
+### **Q1: Most Flight Carrier in September 2013**
+##### The following code finds the top 5 flight carriers in September 2013:
+
+```{r}
+flights %>%
+  filter(month == 9, year == 2013) %>%
+  count(carrier) %>%
+  arrange(desc(n)) %>%
+  head(5) %>%
+  left_join(airlines, by = "carrier")
+
+```
+
+### **Q2: Top 10 Airlines with the Most Flight Distance**
+##### This code identifies the top 10 airlines that have the most flight distance:
+
+```{r}
+flights %>%
+  left_join(airlines, by = "carrier") %>%
+  select(name, carrier, distance) %>%
+  group_by(name) %>%
+  summarise(total_distance = sum(distance, na.rm = TRUE)) %>%
+  arrange(desc(total_distance)) %>%
+  head(10)
+
+```
+
+### **Q3: Top 10 Airlines with the Longest Flight Time**
+##### The following code lists the top 10 airlines with the longest flight time:
+
+```{r}
+flights %>%
+  left_join(airlines, by = "carrier") %>%
+  select(name, carrier, hour) %>%
+  group_by(name) %>%
+  summarise(total_time = sum(hour, na.rm = TRUE)) %>%
+  arrange(desc(total_time)) %>%
+  head(10)
+
+```
+
+### **Q4: Top 10 Airlines with the Most Air Time**
+##### This code finds the top 10 airlines with the most air time:
+
+```{r}
+flights %>%
+  left_join(airlines, by = "carrier") %>%
+  select(name, carrier, air_time) %>%
+  group_by(name) %>%
+  summarise(total_air_time = sum(air_time, na.rm = TRUE)) %>%
+  arrange(desc(total_air_time)) %>%
+  head(10)
+
+```
+
+### **Q5: Top 10 Airlines with the Most Arrival Delays**
+##### The code below identifies the top 10 airlines with the most arrival delays:
+
+```{r}
+flights %>%
+  left_join(airlines, by = "carrier") %>%
+  select(name, carrier, arr_delay) %>%
+  group_by(name) %>%
+  summarise(total_arr_delay = sum(arr_delay, na.rm = TRUE)) %>%
+  arrange(desc(total_arr_delay)) %>%
+  head(10)
+
+```
+
+
+
+
+
+
+
+
+
